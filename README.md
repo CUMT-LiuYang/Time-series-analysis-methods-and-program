@@ -1,6 +1,7 @@
 # Time-series-analysis-methods-and-program
 The editor can customize time series analysis to explore the temporal changes influenced by different factors. This project will use built-in air quality data as demonstration content to show how to conduct data analysis using this program and assist you in developing more in-depth analytical content.
 
+
 ## 1. Introduction of Document:
 
 This document outlines the content of my undergraduate graduation project. 
@@ -34,11 +35,12 @@ Whole-project/
 └── Readme.txt  
 
 ## 3. Overview:
-The main executable program is the Air_quality.py file. Currently, the program is modified for air quality data analysis, based on data from a specific site in Xuzhou, China, analyzing the factors affecting air time series variation (the source of data is unknown, and its authenticity is questionable). This program accepts specific data formats, detailed format specifications can be found in section 4. Document Description. The program references the paper "Fluctuations of water quality time series in rivers follow superstatistics," along with its accompanying program code, detailed references can be found in section 5. References. To facilitate the program's conversion into a time series processing and analysis program that readers need, this document will briefly explain some data processing considerations, for details please refer to section 3. Considerations.
+The main executable program is the `Air_quality.py` file. Currently, the program is modified for air quality data analysis, based on data from a specific site in Xuzhou, China, analyzing the factors affecting air time series variation (the source of data is unknown, and its authenticity is questionable).<br> <br>
+This program accepts specific data formats, detailed format specifications can be found in section `4. Document Description`.<br><br> The program references the paper **"[Fluctuations of water quality time series in rivers follow superstatistics](https://www.sciencedirect.com/science/article/pii/S258900422100849X#cebib0010)**," along with its accompanying program code, detailed references can be found in section `5. References`. <br><br>To facilitate the program's conversion into a time series processing and analysis program that readers need, this document will briefly explain some data processing considerations, for details please refer to section `3. Considerations`.
 
 ## 4. Considerations:
 ### Ⅰ. Update file paths & formats
-When changing data files, attention should be paid to modifying the file path. The default file path is "./data/2023_Xuzhou_Air_Indicators_Data_Every_One_Hour.csv", and the file input format is CSV. If you need to input files in other formats, please modify the input file type accordingly.
+When changing data files, attention should be paid to modifying the file path. The default file path is `"./data/2023_Xuzhou_Air_Indicators_Data_Every_One_Hour.csv"`, and the file input format is CSV. If you need to input files in other formats, please modify the input file type accordingly.
 
 ### Ⅱ. Mind time gaps
 Attention should be paid to the possibility of non-continuous time distribution during the generation process of time series, which may result in inconsistencies between data and time. Therefore, generating a new time series directly may lead to mismatched data and time. Instead, it is advisable to process the original data to avoid this issue.
@@ -51,6 +53,7 @@ Specific data formats are followed for the introduced data. Correspond data by c
 
 ## 6. References:
 
+The main reference in the paper discusses various methods for handling time series data. It focuses on analyzing the curve trends over long and short periods of time in air quality datasets from specific locations within specific regions, and using them for subsequent forecasting.
 
 
 
