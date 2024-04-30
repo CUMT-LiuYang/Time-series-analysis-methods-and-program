@@ -1,0 +1,11 @@
+numpy
+pandas
+matplotlib
+seaborn
+scipy
+statistics
+joblib
+scipy
+datetime
+statsmodels
+EMD-signal
