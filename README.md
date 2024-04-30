@@ -51,3 +51,28 @@ Specific data formats are followed for the introduced data. Correspond data by c
 
 ## 6.References:
 
+
+
+
+
+
+
+
+
+
+
+<pre>-----------------------------------------------------------------------------
+--            Author: Liu Yang                                             --
+--                                                                         --
+--            Location: China University of Mining and Technology          --
+--                                                                         --
+--            Contact Information:                                         --
+--                E-mail_01: 1642577223@qq.com                             --
+--                E-mail_02: 10204410@cumt.edu.cn                          --
+--                Phone_01: +86-16675860876                                --
+--                Phone_02: +86-19852497128                                --
+--                                                                         --
+--            Last Edited Date: April 28, 2024                             --
+-----------------------------------------------------------------------------</pre>
+
+
