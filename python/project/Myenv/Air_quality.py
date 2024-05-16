@@ -28,18 +28,16 @@ from PyEMD import EMD
 #increase the font size for plotting
 plt.rc('font', size=16)
 
-# 引用徐州空气质量监测中的“四种气体”作为时间序列分析数据（2023年1月至2023年12月）
-# Import the "Four Gases" in Xuzhou Air Quality Monitoring as time series analysis data(From January 2023 to December 2023)
-data = pd.read_csv("./data/2023_Xuzhou_Air_Indicators_Data_Every_One_Hour.csv")
+
+#Import the "Four Gases" in Xuzhou Air Quality Monitoring as time series analysis data(From January 2023 to December 2023)
+data = pd.read_csv("./data/2022_Xuzhou_Air_Indicators_Data_Every_One_Hour.csv")
 
 # 将字符串格式的日期转换为 datetime 对象
-# Convert a date in string format to a datetime object
 data['Date'] = pd.to_datetime(data['Date'], format="%Y-%m-%dT%H:%M:%SZ")
 
-# In[ ]:
+
 
 # 定义颜色
-# Define colors
 current_palette = sns.color_palette()
 COColor = current_palette[3]
 NO2Color = current_palette[0]
@@ -49,7 +47,6 @@ SO2Color = current_palette[4]
 
 
 # 过滤获取各气体数据
-# Filter to obtain the data of each gas
 gas_data = {
     'CO': data.filter(like="CO (mg/m³)"),
     'NO2': data.filter(like="NO2 (µg/m³)"),
@@ -73,9 +70,9 @@ def gas_curves(data, gas_name, ylabel, exportName, axis, label_no):
     axis.legend()
 
 
-# In[ ]:
 
-fig, axs = plt.subplots(2,2,figsize=(16,12))
+
+fig, axs = plt.subplots(2,2,figsize=(12,9))
 ax1 = axs[0, 0]
 ax2 = axs[1, 0]
 ax3 = axs[1, 1]
@@ -86,7 +83,7 @@ gas_curves(data, 'CO', 'CO (mg/m³)', 'exportName', ax1, 0)
 gas_curves(data, 'NO2', 'NO2 (µg/m³)', 'exportName', ax2, 1)
 gas_curves(data, 'O3', 'O3 (µg/m³)', 'exportName', ax3, 2)
 gas_curves(data, 'SO2', 'SO2 (µg/m³)', 'exportName', ax4, 3)
-fig.autofmt_xdate(rotation=45)
+fig.autofmt_xdate(rotation=90)
 #fig.suptitle("Air Quality Gas Concentrations", fontsize=18)
 fig.align_ylabels(axs[:, 1])
 plt.savefig('Sup_pics/Fig1.pdf', bbox_inches='tight')
@@ -94,10 +91,9 @@ plt.show()
 
 
 
-# In[ ]:
 
-# 数据截取（可按数据量截取，也可编写日期处理函数按日期截取）
-# Data Interception (can be intercepted by data volume, or you can write a date processing function to intercept by date)
+
+#数据截取（可按数据量截取，也可编写日期处理函数按日期截取）
 def filter_gas_data(gas_data, gas_name, start_idx, length):
     """
     Filter gas data based on gas name and index range.
@@ -124,9 +120,8 @@ def filter_gas_data(gas_data, gas_name, start_idx, length):
     return filtered_data
 
 
-# In[ ]:
-# 一体化函数
-# All-in-one functions
+
+#一体化函数
 def column_name_tolist(gas_name):
     #列名转换（可排除多余空格和其他字符）
     column_names = pd.Series(data.columns)
@@ -136,8 +131,7 @@ def column_name_tolist(gas_name):
 
 
 
-# 列数据选择函数
-# Column data selection function
+#列数据选择函数
 def Data_integration(gas_name):
     column_name_tolist(gas_name)
     dataton = (data['Date'], data[column_name_tolist(gas_name)])
@@ -151,9 +145,16 @@ def Data_interception(gas_name,start_index,length):
     gas_date_cut = gas_date[start_index:start_index+length:]
     return Date_cut, gas_date_cut
 
-# In[ ]:
-# 显示一周内每一小时对应的数据变化趋势
-# Displays the trend of data changes for each hour of the week
+
+
+
+
+#添加计算函数，计算日期对应索引值（不准确），使用字符检索
+
+
+
+
+#显示一周内每一小时对应的数据变化趋势
 def gas_curves_week(gas_name, ylabel, exportName, axis, label_no):
     axis.plot(Data_interception(gas_name,start_index=2841,length=168)[0], Data_interception(gas_name,start_index=2841,length=168)[1], alpha=0.7, label=gas_name, color=eval(gas_name+"Color"))
     axis.set_xlabel('Date',fontsize=16)
@@ -164,11 +165,16 @@ def gas_curves_week(gas_name, ylabel, exportName, axis, label_no):
     axis.legend()
 
 
-fig, axw = plt.subplots(2,2,figsize=(12,10))
+fig, axw = plt.subplots(2,2,figsize=(12,9))
+
 ax5 = axw[0, 0]
 ax6 = axw[1, 0]
 ax7 = axw[1, 1]
 ax8 = axw[0, 1]
+
+
+
+
 
 gas_curves_week('CO', 'CO (mg/m³)', 'exportName', ax5, 0)
 gas_curves_week('NO2', 'NO2 (µg/m³)', 'exportName', ax7, 1)
@@ -182,21 +188,22 @@ plt.savefig('Sup_pics/Fig2.pdf', bbox_inches='tight')
 plt.show()
 
 
-# 以上为单显图
-# The above is a single display
-# 以下为合成同显图：区别主要在单位统一
-# The following is the composite same display diagram: the difference is mainly in the unit
+#以上为单显图
 
-# 先进行数据处理
-# Data processing is carried out first
+#以下为合成同显图：区别主要在单位统一
+#先进行数据处理
+
+
+
+
+
 data['Date'] = pd.to_datetime(data['Date'], format="%Y-%m-%dT%H:%M:%SZ")
 data["CO (mg/m³)"] *= 1000
 
 print(data["Date"])
 
 
-# 显示在一张图上，由于显示对比度不够，不显示该图
-# It is displayed on a single image, but the image is not displayed due to insufficient display contrast
+#显示在一张图上，由于显示对比度不够，不显示该图
 """def plot_trajectories_full(data, ylabel, exportName, axis,labelNo):
     #plot the quantity at all locations for the full year
     axis.plot(data["Date"],Data_integration("CO")[1], alpha=0.7, color=COColor)
@@ -213,14 +220,13 @@ plot_trajectories_full(data, "Gas density (µg/m³)","exportName", axall, 1)
 plt.savefig('Sup_pics/Fig3.pdf', bbox_inches='tight')
 plt.show()
 """
-# In[ ]:
-# 绘制概率密度函数直方图
-# Plot a histogram of the probability density function
+
+#绘制概率密度函数直方图
+
 def plot_histograms_ax(data,gas_name, ylabel, useCustomyLim, axis, labelNo):
     #plot the histograms at all locations for the same time
     current_palette = sns.color_palette()
     sns.distplot(Data_integration(gas_name)[1].dropna(), hist=True, kde=True, color=eval(gas_name+"Color"), ax=axis)
-    #sns.histplot(Data_integration(gas_name)[1].dropna(), kde=True, color=eval(gas_name + "Color"), ax=axis)
     axis.set_yscale('log')
     axis.set_xlabel(ylabel)
     axis.set_ylabel('PDF')
@@ -245,7 +251,29 @@ plt.savefig('Sup_pics/Fig4.pdf', bbox_inches='tight')
 plt.show()
 
 
-# In[ ]:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def seasonal_detrend(gas_name, frequency):
     hour=4
@@ -294,7 +322,21 @@ def quantityLabels(gas_name):
         exportName = 'O3'
     return (xlabel,exportName)
 
-# In[ ]:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def q_Gauss_pdf(x,q,l,mu):
     constant=np.sqrt(np.pi)*gamma((3-q)/(2*(q-1)))/(np.sqrt(q-1)*gamma(1/(q-1)))
@@ -322,7 +364,6 @@ class q_Gauss_custom(st.rv_continuous):
         return all_bool
 qGauss_custom_inst = q_Gauss_custom(name='qGauss_custom',a=0)
 
-# In[ ]:
 
 def plot_fluctuation_histo(detrended, gas_name, method):
     (xlabel, exportName) = quantityLabels(gas_name)
@@ -343,10 +384,9 @@ def plot_fluctuation_histo(detrended, gas_name, method):
                 bbox_inches='tight')
     plt.show()
 
-# 超统计函数
+
 # Superstatistics functions
 
-# 确定平均峰度
 # Determine average kurtosis
 def averageKappa(data, DeltaT):
     meanData = np.mean(data);
@@ -360,7 +400,7 @@ def averageKappa(data, DeltaT):
         sumOfFractions = sumOfFractions + nominator / (denominator ** 2);
     return sumOfFractions / (tMax - DeltaT) * DeltaT
 
-# 定义一个隶属函数，避免包含已删除为 NaN 的索引
+
 # define a membership function to avoid including indices that have been removed as NaN
 def testMembership(item, list):
     if any(item == c for c in list):
@@ -391,9 +431,11 @@ def betaList(data, T):
 
 
 
-# In[ ]:
+
+
+
+
 hour = 4
-# 计算并绘制平均峰度随时间的变化
 # compute and plot the average kurtosis as a function of time
 def plotLongTimeScale(detrended, gas_name, method, startTime, EndTime, TimeStep, targetKurtosis):
     (xlabel, exportName) = quantityLabels(gas_name)
@@ -412,7 +454,7 @@ def plotLongTimeScale(detrended, gas_name, method, startTime, EndTime, TimeStep,
                 bbox_inches='tight')
     plt.show()
 
-# 绘制低方差和高方差快照
+
 # plot a low and high-variance snapshot
 def plotExtremeSnapshots(detrended, gas_name, method, longTimeScale):
     (xlabel, exportName) = quantityLabels(gas_name)
@@ -453,9 +495,6 @@ def plotExtremeSnapshots(detrended, gas_name, method, longTimeScale):
     plt.show()
 
 
-
-# In[ ]:
-# 返回下一个预测函数，假设峰度是线性函数
 # function that returns the next guess, assuming the kurtosis is a linear function
 def nextGuessingTime(x1, y1, x2, y2, targetKurtosis):
     slope = (y2 - y1) / (x2 - x1)
@@ -463,7 +502,7 @@ def nextGuessingTime(x1, y1, x2, y2, targetKurtosis):
     predictedTime = (targetKurtosis - intercept) / slope
     return int(predictedTime)
 
-# 系统地确定长时间尺度的功能，给定初始值和一定的容差
+
 # Function to systemnatically determine the long time scale, given an initial value and a certain tolerance
 def determineLongTimeScale(detrended, gas_name, method, initialTimeGuess, initalGuessIncrement,
                            kurtosisTolerance, targetKurtosis):
@@ -513,9 +552,6 @@ def fit_and_plot_betaDist(detrended, gas_name, method, longTimeScale):
     meanBeta = np.mean(betaDis)
     meanB = meanBeta
 
-    # 定义自定义 PDF，使用 beta 的平均值进行逆 chi^2 分布，但将其保留为 chi^2 分布的拟合参数（导致更稳定的拟合）
-    # 定义卡方自定义 PDF，注意我们还拟合了平均 beta 值以允许算法收敛
-    # 定义自定义 PDF
     # define custom pdf, using the mean of beta for inverse chi^2 distributions but leaving it as a fitting parameter for chi^2 distributions (leads to stabler fits)
     # define the chi-square custom pdf, note that we also fit the mean beta value to allow the algorithm to converge
     # define custom pdf
@@ -594,9 +630,6 @@ def fit_and_plot_betaDist(detrended, gas_name, method, longTimeScale):
     plt.show()
 
 
-# In[ ]:
-
-# BETA 混合分布和拟合
 # BETA MIXTURE PLOT AND FIT
 def fit_and_plot_betaDist_Mix(detrended, gas_name, method, longTimeScale):
     (xlabel, exportName) = quantityLabels(gas_name)
@@ -608,9 +641,6 @@ def fit_and_plot_betaDist_Mix(detrended, gas_name, method, longTimeScale):
     meanBeta = np.mean(betaDis)
     meanB = meanBeta
 
-    # 定义自定义 PDF，使用 beta 的平均值进行逆 chi^2 分布，但将其保留为 chi^2 分布的拟合参数（导致更稳定的拟合）
-    # 定义卡方自定义 PDF，注意我们还拟合了平均 beta 值以允许算法收敛
-    # 定义自定义 PDF
     # define custom pdf, using the mean of beta for inverse chi^2 distributions but leaving it as a fitting parameter for chi^2 distributions (leads to stabler fits)
     # define the chi-square custom pdf, note that we also fit the mean beta value to allow the algorithm to converge
     # define custom pdf
@@ -705,8 +735,9 @@ def fit_and_plot_betaDist_Mix(detrended, gas_name, method, longTimeScale):
 
 
 # In[ ]:
-# 需要将时间序列数据转换为字符串数据用于处理
-# Time series data needs to be converted to string data for processing
+#需要将时间序列数据转换为字符串数据用于处理
+
+
 def save_txt_fig(gas_name, fq = 6, IMF = 2):
     dataClean = data["Date"].dt.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -811,7 +842,6 @@ def plot_fluctuation_histo_axs(gas_name, method, axis, labelNo):
     # plt.hist(detrended, density=True,log=True)
     detrended = import_detrending(gas_name, method)
     plot = sns.distplot(detrended, ax=axis)
-    #plot = sns.histplot(detrended, ax=axis)
     # extract distplot range
     (xvalues_hist, yvalues_hist) = plot.get_lines()[0].get_data()
     qGaussParameters = qGauss_custom_inst.fit(detrended - np.mean(detrended), 1.2, 1, floc=0, fscale=1)
@@ -864,9 +894,9 @@ def import_detrending(gas_name, method):
     return detrended
 
 
-def gas_out(gas_name):
+def gas_out(gas_name, method):
     hour = 4
-    method = 'Seasonal'
+    #method = 'Seasonal'
     exportName = 'XU ZHOU'
     startTime = 2
     EndTime = 20
@@ -882,16 +912,22 @@ def gas_out(gas_name):
     plt.plot(plotTimeList, targetKurtosis * np.ones(len(kurtosisList)), linewidth=4.0)
     plt.xlabel('Time lag $\Delta t$ [hour]')
     plt.ylabel('Average kurtosis $\overline{\kappa}$')
-    plt.title(column_name_tolist(gas_name))
+    plt.title(column_name_tolist(gas_name) + ' - ' + method)
     plt.legend([column_name_tolist(gas_name) + ' - ' + exportName, 'Gaussian'])
-    plt.savefig('Sup_pics/Fig'+gas_name+'Gaussian' +'.pdf', bbox_inches='tight')
+    plt.savefig('Sup_pics/Fig'+gas_name+'averageKappa' + method + '.pdf', bbox_inches='tight')
     plt.show()
 
 
+method = "Seasonal"
 
+gas_out("CO",method)
+gas_out("NO2",method)
+gas_out("SO2",method)
+gas_out("O3",method)
 
-gas_out("CO")
-gas_out("NO2")
-gas_out("SO2")
-gas_out("O3")
+method = 'EMD'
 
+gas_out("CO",method)
+gas_out("NO2",method)
+gas_out("SO2",method)
+gas_out("O3",method)
